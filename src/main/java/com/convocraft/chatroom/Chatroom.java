@@ -1,5 +1,5 @@
 package com.convocraft.chatroom;
 
-public class Socket {
+public class Chatroom {
     
 }
