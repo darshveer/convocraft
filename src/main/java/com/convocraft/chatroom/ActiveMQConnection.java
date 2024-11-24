@@ -15,6 +15,9 @@ import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class ActiveMQConnection{
+    private ConnectionFactory connectionFactory;
+    private Connection connection;
+    private Session session;
 
     public ActiveMQConnection(String topicName){
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
@@ -27,12 +30,7 @@ public class ActiveMQConnection{
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         // Create a destination (topic for broadcasts)
-        Destination destination = session.createTopic(topicName);
-
-        // Create a message producer
-        MessageProducer producer = session.createProducer(destination);
-
-        
+        Destination destination = session.createTopic(topicName);   
 
     }
     

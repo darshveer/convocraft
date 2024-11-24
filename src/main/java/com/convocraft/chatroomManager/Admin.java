@@ -1,5 +1,6 @@
 package com.convocraft.chatroomManager;
 
-public class Admin {
+public class Admin extends User {
+    
     
 }
