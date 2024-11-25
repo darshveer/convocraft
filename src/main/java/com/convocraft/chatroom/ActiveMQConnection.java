@@ -25,29 +25,34 @@ public class ActiveMQConnection{
 
         // Create a connection
         Connection connection = connectionFactory.createConnection();
-        connection.start();
+        connection.start(); System.out.println("Connection started successfully");
+
 
         // Create a session
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE); System.out.println("Session created successfully");
+
 
         // Create a destination (topic for broadcasts)
-        Destination destination = session.createTopic(topicName);   
+        Destination destination = session.createTopic(topicName); System.out.println("Destination created successfully");
 
     }
     
     public ActiveMQConnection(String topicName, String hostIp, String hostPort, String username){
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://"+hostIp+":"+hostPort);
+        try{
+            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://"+hostIp+":"+hostPort);
 
-        // Create a connection
-        Connection connection = connectionFactory.createConnection();
-        connection.start();
+            // Create a connection
+            Connection connection = connectionFactory.createConnection();
+            connection.start(); System.out.println("Connection started successfully");
 
-        // Create a session
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            // Create a session
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE); System.out.println("Session created successfully");
 
-        // Create a destination (topic for broadcasts)
-        Destination destination = session.createTopic(topicName);
-
+            // Create a destination (topic for broadcasts)
+            Destination destination = session.createTopic(topicName); System.out.println("Destination created successfully");
+        } catch (JMSException e) {
+            System.out.println("Error connecting to ActiveMQ: " + e.getMessage());
+        }
     }
 
     public Session getSession(){

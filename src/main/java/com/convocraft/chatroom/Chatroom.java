@@ -53,8 +53,9 @@ public class Chatroom {
     }
 
                                                                                                                                                                                       
-private class CommandProcessor {
-    public CommandProcessor(){
-        
+    private class CommandProcessor {
+        public CommandProcessor(){
+            
+        }
     }
 }

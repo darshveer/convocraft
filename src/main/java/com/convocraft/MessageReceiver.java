@@ -10,7 +10,9 @@ class MessageReceiver implements Runnable {
     public void run() {
         while (true) {
             String message = user.receiveMessage();
+            if (message == null) {
             System.out.println("Received message: " + message);
+            }
         }
     }
 }

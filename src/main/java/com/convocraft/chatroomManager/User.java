@@ -1,5 +1,7 @@
 package com.convocraft.chatroomManager;
 
+import com.convocraft.chatroom.Chatroom;
+
 public class User {
     String username;
     Chatroom chatroom;
@@ -13,8 +15,10 @@ public User(String username, Chatroom chatroom) {
 }
 
 public String receiveMessage(){
-    
+    return chatroom.receiveMessage();
 }
-public void sendMessage(){}
+public void sendMessage(String meessage){
+    chatroom.sendMessage(meessage);
+}
 }
 

@@ -1,18 +1,22 @@
 package com.convocraft;
 
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import com.convocraft.chatroom.Chatroom;
+import com.convocraft.chatroomManager.Admin;
 import com.convocraft.chatroomManager.User;
 
 public class App
 {
-    public Chatroom chatroom;
-    public User user;
+    
     
     public static void main( String[] args )
     {       
+        public Chatroom chatroom;
+        public User user;
+
         try {                                                                           // Get the IP address
             InetAddress address = InetAddress.getLocalHost();
             String ipAddress = address.getHostAddress();
@@ -31,22 +35,29 @@ public class App
         while(true){
             String input = scanner.nextLine();
 
-            if (input.equals("'CREATE'")| input.equals("CREATE")){                          //Creating a new chatroom and user
+            if (input.equals("'CREATE'")|| input.equals("CREATE")){                          //Creating a new chatroom and user
 
                 System.out.println("What would you like to name your chatroom?");
                 String chatroomName = scanner.nextLine();
                 System.out.println("What would you like to name your admin?");
                 String adminName = scanner.nextLine();
 
-                //TODO: Make sure chatroom name is unique while extention
+                //TODO: Make sure chatroom name is unique while extending
                 chatroom = new Chatroom(chatroomName, adminName, ipAddress);
 
                 System.out.println("What would you like to name your user?");
                 String username = scanner.nextLine();
-                user = new Admin(username, chatroom);    
+                user = new Admin(username, chatroom);
+                
+                // Start threads for sending and receiving messages
+                Thread senderThread = new Thread(new MessageSender(user));
+                Thread receiverThread = new Thread(new MessageReceiver(user));
+
+                senderThread.start();
+                receiverThread.start();
 
                 break;
-            }else if(input.equals(input.equals("'JOIN'")| input.equals("JOIN"))){            //Joining an existing chatroom and creating user
+            }else if(input.equals(input.equals("'JOIN'")|| input.equals("JOIN"))){            //Joining an existing chatroom and creating user
 
                 System.out.println("What is the name of the chatroom you would like to join?");
                 String chatroomName = scanner.nextLine();
@@ -62,11 +73,18 @@ public class App
                 System.out.println("What would you like to name your user?");
                 String username = scanner.nextLine();
                 user = new User(username, chatroom);
+
+                // Start threads for sending and receiving messages
+                Thread senderThread = new Thread(new MessageSender(user));
+                Thread receiverThread = new Thread(new MessageReceiver(user));
+
+                senderThread.start();
+                receiverThread.start();
+                
                 break;
             }else{
                 System.out.println("Invalid input, please type 'CHOOSE' or 'JOIN'.");
             }
-
         }
     }
 }
