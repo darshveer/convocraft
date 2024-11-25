@@ -18,6 +18,7 @@ public class ActiveMQConnection{
     private ConnectionFactory connectionFactory;
     private Connection connection;
     private Session session;
+    private Destination destination;
 
     public ActiveMQConnection(String topicName){
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
@@ -47,6 +48,10 @@ public class ActiveMQConnection{
         // Create a destination (topic for broadcasts)
         Destination destination = session.createTopic(topicName);
 
+    }
+
+    public Session getSession(){
+        return session;
     }
     
 }

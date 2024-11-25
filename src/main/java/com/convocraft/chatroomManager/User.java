@@ -12,4 +12,9 @@ public User(String username, Chatroom chatroom) {
     this.chatroom = chatroom;
 }
 
-create
+public String receiveMessage(){
+    
+}
+public void sendMessage(){}
+}
+
