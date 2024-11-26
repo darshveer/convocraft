@@ -51,6 +51,9 @@ public class App
                 Thread senderThread = new Thread(new MessageSender(user,scanner));
                 Thread receiverThread = new Thread(new MessageReceiver(user));
 
+                System.out.println("Your ip address is: " + ipAddress);
+                System.out.println("Your port is: 61616" );
+
                 senderThread.start();
                 receiverThread.start();
                 try {
