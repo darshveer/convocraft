@@ -11,11 +11,10 @@ import com.convocraft.chatroomManager.User;
 public class App
 {
     
-    
     public static void main( String[] args )
     {       
-        public Chatroom chatroom;
-        public User user;
+        Chatroom chatroom;
+        User user;
 
         try {                                                                           // Get the IP address
             InetAddress address = InetAddress.getLocalHost();
@@ -50,14 +49,15 @@ public class App
                 user = new Admin(username, chatroom);
                 
                 // Start threads for sending and receiving messages
-                Thread senderThread = new Thread(new MessageSender(user));
+                Thread senderThread = new Thread(new MessageSender(user,scanner));
                 Thread receiverThread = new Thread(new MessageReceiver(user));
 
                 senderThread.start();
                 receiverThread.start();
-
+                senderThread.join();
+                receiverThread.join();
                 break;
-            }else if(input.equals(input.equals("'JOIN'")|| input.equals("JOIN"))){            //Joining an existing chatroom and creating user
+            }else if(input.equals("'JOIN'")|| input.equals("JOIN")){            //Joining an existing chatroom and creating user
 
                 System.out.println("What is the name of the chatroom you would like to join?");
                 String chatroomName = scanner.nextLine();
@@ -75,7 +75,7 @@ public class App
                 user = new User(username, chatroom);
 
                 // Start threads for sending and receiving messages
-                Thread senderThread = new Thread(new MessageSender(user));
+                Thread senderThread = new Thread(new MessageSender(user,scanner));
                 Thread receiverThread = new Thread(new MessageReceiver(user));
 
                 senderThread.start();
@@ -83,7 +83,7 @@ public class App
                 
                 break;
             }else{
-                System.out.println("Invalid input, please type 'CHOOSE' or 'JOIN'.");
+                System.out.println("Invalid input, please type 'CREATE' or 'JOIN'.");
             }
         }
     }

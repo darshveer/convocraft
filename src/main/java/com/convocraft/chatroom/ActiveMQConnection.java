@@ -15,12 +15,14 @@ import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class ActiveMQConnection{
+
     private ConnectionFactory connectionFactory;
     private Connection connection;
     private Session session;
     private Destination destination;
 
     public ActiveMQConnection(String topicName){
+        try{
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
         // Create a connection
@@ -34,7 +36,9 @@ public class ActiveMQConnection{
 
         // Create a destination (topic for broadcasts)
         Destination destination = session.createTopic(topicName); System.out.println("Destination created successfully");
-
+        }catch (JMSException e) {
+            System.out.println("Error connecting to ActiveMQ: " + e.getMessage());
+        }
     }
     
     public ActiveMQConnection(String topicName, String hostIp, String hostPort, String username){
