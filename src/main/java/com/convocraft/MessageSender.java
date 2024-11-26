@@ -14,8 +14,8 @@ class MessageSender implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("Start sending messages:");
         while (true) {
-            System.out.println("Enter message to send:");
             String message = scanner.nextLine();
             user.sendMessage(message);
         }

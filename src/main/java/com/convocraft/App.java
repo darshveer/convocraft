@@ -20,7 +20,6 @@ public class App
         try {                                                                           // Get the IP address
             InetAddress address = InetAddress.getLocalHost();
             ipAddress = address.getHostAddress();
-            System.out.println("IP Address: " + ipAddress);
 
             // Create a connection factory using the IP address
         } catch (UnknownHostException e) {
@@ -54,11 +53,12 @@ public class App
                 System.out.println("Your ip address is: " + ipAddress);
                 System.out.println("Your port is: 61616" );
 
-                senderThread.start();
+                
                 receiverThread.start();
+                senderThread.start();
                 try {
-                    senderThread.join();
                     receiverThread.join();
+                    senderThread.join();
                 } catch (InterruptedException e) {
                     // Handle the exception
                     System.err.println("Thread was interrupted: " + e.getMessage());
@@ -77,20 +77,17 @@ public class App
                 String hostPort = scanner.nextLine();
 
                 chatroom = new Chatroom(chatroomName, username, hostIp, hostPort);
-
-                System.out.println("What would you like to name your user?");
-                username = scanner.nextLine();
                 user = new User(username, chatroom);
-
                 // Start threads for sending and receiving messages
                 Thread senderThread = new Thread(new MessageSender(user,scanner));
                 Thread receiverThread = new Thread(new MessageReceiver(user));
 
-                senderThread.start();
                 receiverThread.start();
+                senderThread.start();
                 try {
-                    senderThread.join();
                     receiverThread.join();
+                    senderThread.join();
+                    
                 } catch (InterruptedException e) {
                     // Handle the exception
                     System.err.println("Thread was interrupted: " + e.getMessage());
