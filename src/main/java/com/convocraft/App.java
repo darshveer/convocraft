@@ -1,7 +1,7 @@
 package com.convocraft;
 
 import java.net.InetAddress;
-import java.util.HashMap;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import com.convocraft.chatroom.Chatroom;
@@ -15,10 +15,11 @@ public class App
     {       
         Chatroom chatroom;
         User user;
+        String ipAddress = null;
 
         try {                                                                           // Get the IP address
             InetAddress address = InetAddress.getLocalHost();
-            String ipAddress = address.getHostAddress();
+            ipAddress = address.getHostAddress();
             System.out.println("IP Address: " + ipAddress);
 
             // Create a connection factory using the IP address
@@ -44,9 +45,7 @@ public class App
                 //TODO: Make sure chatroom name is unique while extending
                 chatroom = new Chatroom(chatroomName, adminName, ipAddress);
 
-                System.out.println("What would you like to name your user?");
-                String username = scanner.nextLine();
-                user = new Admin(username, chatroom);
+                user = new Admin(adminName, chatroom);
                 
                 // Start threads for sending and receiving messages
                 Thread senderThread = new Thread(new MessageSender(user,scanner));
@@ -54,8 +53,14 @@ public class App
 
                 senderThread.start();
                 receiverThread.start();
-                senderThread.join();
-                receiverThread.join();
+                try {
+                    senderThread.join();
+                    receiverThread.join();
+                } catch (InterruptedException e) {
+                    // Handle the exception
+                    System.err.println("Thread was interrupted: " + e.getMessage());
+                }
+                
                 break;
             }else if(input.equals("'JOIN'")|| input.equals("JOIN")){            //Joining an existing chatroom and creating user
 
@@ -71,7 +76,7 @@ public class App
                 chatroom = new Chatroom(chatroomName, username, hostIp, hostPort);
 
                 System.out.println("What would you like to name your user?");
-                String username = scanner.nextLine();
+                username = scanner.nextLine();
                 user = new User(username, chatroom);
 
                 // Start threads for sending and receiving messages
@@ -80,6 +85,14 @@ public class App
 
                 senderThread.start();
                 receiverThread.start();
+                try {
+                    senderThread.join();
+                    receiverThread.join();
+                } catch (InterruptedException e) {
+                    // Handle the exception
+                    System.err.println("Thread was interrupted: " + e.getMessage());
+                }
+                
                 
                 break;
             }else{

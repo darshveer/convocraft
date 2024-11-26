@@ -1,4 +1,6 @@
 package com.convocraft;
+import com.convocraft.chatroomManager.User;
+
 class MessageReceiver implements Runnable {
     private User user;
 

@@ -1,16 +1,10 @@
 package com.convocraft.chatroom;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -23,37 +17,37 @@ public class ActiveMQConnection{
 
     public ActiveMQConnection(String topicName){
         try{
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+            connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
-        // Create a connection
-        Connection connection = connectionFactory.createConnection();
-        connection.start(); System.out.println("Connection started successfully");
-
-
-        // Create a session
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE); System.out.println("Session created successfully");
+            // Create a connection
+            connection = connectionFactory.createConnection();
+            connection.start(); System.out.println("Connection started successfully");
 
 
-        // Create a destination (topic for broadcasts)
-        Destination destination = session.createTopic(topicName); System.out.println("Destination created successfully");
+            // Create a session
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE); System.out.println("Session created successfully");
+
+
+            // Create a destination (topic for broadcasts)
+            destination = session.createTopic(topicName); System.out.println("Destination created successfully");
         }catch (JMSException e) {
             System.out.println("Error connecting to ActiveMQ: " + e.getMessage());
         }
     }
     
-    public ActiveMQConnection(String topicName, String hostIp, String hostPort, String username){
+    public ActiveMQConnection(String topicName, String hostIp, String hostPort){
         try{
-            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://"+hostIp+":"+hostPort);
+            connectionFactory = new ActiveMQConnectionFactory("tcp://"+hostIp+":"+hostPort);
 
             // Create a connection
-            Connection connection = connectionFactory.createConnection();
+            connection = connectionFactory.createConnection();
             connection.start(); System.out.println("Connection started successfully");
 
             // Create a session
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE); System.out.println("Session created successfully");
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE); System.out.println("Session created successfully");
 
             // Create a destination (topic for broadcasts)
-            Destination destination = session.createTopic(topicName); System.out.println("Destination created successfully");
+            destination = session.createTopic(topicName); System.out.println("Destination created successfully");
         } catch (JMSException e) {
             System.out.println("Error connecting to ActiveMQ: " + e.getMessage());
         }
@@ -61,6 +55,9 @@ public class ActiveMQConnection{
 
     public Session getSession(){
         return session;
+    }
+    public Destination getDestination(){
+        return destination;
     }
     
 }

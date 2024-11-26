@@ -1,7 +1,14 @@
 package com.convocraft.chatroom;
 
 import java.util.HashMap;
-import javax.jms.*;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
 import com.convocraft.chatroomManager.ActiveMQConnectionManager;
 
 public class Chatroom {
@@ -21,8 +28,12 @@ public class Chatroom {
 
         connection = ActiveMQConnectionManager.createChatroomTopic(chatroomName);
         session = connection.getSession();
-        producer = session.createProducer(destination);
-        consumer = session.createConsumer(destination);
+        try {
+            producer = session.createProducer(connection.getDestination());
+            consumer = session.createConsumer(connection.getDestination());
+        } catch (JMSException e) {
+            System.err.println("JMS error occurred: " + e.getMessage());
+        }
     }
 
     public Chatroom(String chatroomName, String username, String hostIp, String hostPort){
@@ -33,21 +44,32 @@ public class Chatroom {
 
         connection = ActiveMQConnectionManager.joinChatroomTopic(chatroomName, hostIp, hostPort);
         session = connection.getSession();
-        producer = session.createProducer(destination);
-        consumer = session.createConsumer(destination);
+        try {
+            producer = session.createProducer(connection.getDestination());
+            consumer = session.createConsumer(connection.getDestination());
+        } catch (JMSException e) {
+            System.err.println("JMS error occurred: " + e.getMessage());
+        }
     }
 
     public void sendMessage(String message){ // send message to topic
+        try{
         TextMessage textMessage = session.createTextMessage(message);
         producer.send(textMessage);
+        }catch(JMSException e){
+            System.err.println("JMS error occurred: " + e.getMessage());
+        }
     }
 
     public String receiveMessage(){ // receive message from topic
-       
-        Message receivedMessage = consumer.receive();
-        // Print the received message
-        if (receivedMessage instanceof TextMessage) {
-            return ((TextMessage) receivedMessage).getText();
+        try{
+            Message receivedMessage = consumer.receive();
+            // Print the received message
+            if (receivedMessage instanceof TextMessage) {
+                return ((TextMessage) receivedMessage).getText();
+            }
+        }catch(JMSException e){
+            System.err.println("JMS error occurred: " + e.getMessage());
         }
         return null;
     }
