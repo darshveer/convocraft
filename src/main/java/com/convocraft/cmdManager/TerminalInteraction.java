@@ -31,16 +31,26 @@ public class TerminalInteraction {
 
             System.out.println("New terminal opened to run new Chatroom.");
 
-            // Main terminal input handling
             Scanner scanner = new Scanner(System.in);
-            String str;
-            do {
-                System.out.print("Enter a String [Main Terminal]: ");
-                str = scanner.nextLine();
-                System.out.println(str);
-            } while (!str.equals("exit"));
 
-            scanner.close();
+            // Main Terminal Input Handling
+            while (true) {
+                System.out.print("Enter 'CREATE' to create a new chatroom or 'JOIN' to join an existing one: ");
+                String input = scanner.nextLine();
+                if (input.equals("'CREATE'")|| input.equals("CREATE")){                          //Creating a new chatroom and user
+                    // TODO: Make sure chatroom name is unique while extending
+                    TerminalInteraction terminalInteraction = new TerminalInteraction();
+                    terminalInteraction.createRoom();
+                } else if (input.equals("'JOIN'")|| input.equals("JOIN")){            //Joining an existing chatroom and creating user
+
+                    TerminalInteraction terminalInteraction = new TerminalInteraction();
+                    terminalInteraction.joinRoom();
+                } else if (input.equals("'EXIT'")|| input.equals("EXIT")){            //Joining an existing chatroom and creating user 
+                    System.exit(0);
+                } else {
+                    System.out.println("Invalid input, please type 'CREATE' or 'JOIN'.");
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -75,14 +85,23 @@ public class TerminalInteraction {
 
             // Main terminal input handling
             Scanner scanner = new Scanner(System.in);
-            String str;
-            do {
-                System.out.print("Enter a String [Main Terminal]: ");
-                str = scanner.nextLine();
-                System.out.println(str);
-            } while (!str.equals("exit"));
+            while (true) {
+                System.out.print("Enter 'CREATE' to create a new chatroom or 'JOIN' to join an existing one: ");
+                String input = scanner.nextLine();
+                if (input.equals("'CREATE'")|| input.equals("CREATE")){                          //Creating a new chatroom and user
+                    // TODO: Make sure chatroom name is unique while extending
+                    TerminalInteraction terminalInteraction = new TerminalInteraction();
+                    terminalInteraction.createRoom();
+                } else if (input.equals("'JOIN'")|| input.equals("JOIN")){            //Joining an existing chatroom and creating user
 
-            scanner.close();
+                    TerminalInteraction terminalInteraction = new TerminalInteraction();
+                    terminalInteraction.joinRoom();
+                } else if (input.equals("'EXIT'")|| input.equals("EXIT")){            //Joining an existing chatroom and creating user 
+                    System.exit(0);
+                } else {
+                    System.out.println("Invalid input, please type 'CREATE' or 'JOIN'.");
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
