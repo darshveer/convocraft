@@ -28,7 +28,7 @@ public class App
 
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println( "Hello User!\nWould you like to 'CREATE' a new Chatroom or 'JOIN' an existing one?" );
+        System.out.print( "Hello User!\nWould you like to 'CREATE' a new Chatroom or 'JOIN' an existing one: " );
         
 
         while(true){
@@ -36,9 +36,9 @@ public class App
 
             if (input.equals("'CREATE'")|| input.equals("CREATE")){                          //Creating a new chatroom and user
 
-                System.out.println("What would you like to name your chatroom?");
+                System.out.print("Enter Chatroom name: ");
                 String chatroomName = scanner.nextLine();
-                System.out.println("What would you like to name your admin?");
+                System.out.print("Enter admin name: ");
                 String adminName = scanner.nextLine();
 
                 //TODO: Make sure chatroom name is unique while extending
