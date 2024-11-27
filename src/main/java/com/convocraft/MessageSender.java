@@ -13,6 +13,7 @@ class MessageSender implements Runnable {
         this.scanner = scanner;
     }
 
+
     @Override
     public void run() {
         System.out.println("You've joined the Chatroom! Send messages below.");
