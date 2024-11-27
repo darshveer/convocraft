@@ -13,7 +13,7 @@ class MessageReceiver implements Runnable {
         while (true) {
             String message = user.receiveMessage();
             if (message != null) {
-            System.out.println("Received message: " + message);
+                System.out.println("Received message: " + message);
             }
         }
     }

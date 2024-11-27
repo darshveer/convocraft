@@ -50,7 +50,7 @@ public class App
                 Thread senderThread = new Thread(new MessageSender(user,scanner));
                 Thread receiverThread = new Thread(new MessageReceiver(user));
 
-                System.out.println("Your ip address is: " + ipAddress);
+                System.out.println("Your IP address is: " + ipAddress);
                 System.out.println("Your port is: 61616" );
 
                 
@@ -67,13 +67,13 @@ public class App
                 break;
             }else if(input.equals("'JOIN'")|| input.equals("JOIN")){            //Joining an existing chatroom and creating user
 
-                System.out.println("What is the name of the chatroom you would like to join?");
+                System.out.print("Enter name of Chatroom to join: ");
                 String chatroomName = scanner.nextLine();
-                System.out.println("What is your username?");
+                System.out.print("Enter your username: ");
                 String username = scanner.nextLine();
-                System.out.println("What is the Ip of the chatroom host?");
+                System.out.print("Enter IP Address of the chatroom host: ");
                 String hostIp = scanner.nextLine();
-                System.out.println("What is the port of the chatroom host?");
+                System.out.print("Enter port of Chatroom host: ");
                 String hostPort = scanner.nextLine();
 
                 chatroom = new Chatroom(chatroomName, username, hostIp, hostPort);
