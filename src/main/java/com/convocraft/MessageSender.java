@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import com.convocraft.chatroomManager.User;
 
-class MessageSender implements Runnable {
+public class MessageSender implements Runnable {
     private User user;
     private Scanner scanner;
 
@@ -19,6 +19,7 @@ class MessageSender implements Runnable {
         System.out.println("You've joined the Chatroom! Send messages below.");
         while (true) {
             String message = scanner.nextLine();
+            //System.out.print("\033[2K\r");
             user.sendMessage(message);
         }
     }
