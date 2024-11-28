@@ -11,14 +11,30 @@ import com.convocraft.chatroom.Chatroom;
 import com.convocraft.chatroomManager.User;
 
 public class existingRoom {
+
+    private static boolean isValidUsername(String username) {
+        String regex = "^[a-zA-Z0-9_]+$";
+        return username.matches(regex);
+    }
     public static void main(String[] args) throws IOException {
         System.out.print("\033[H\033[2J"); // move cursor to top and clear screen
         System.out.flush();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter name of Chatroom to join: ");
         String chatroomName = scanner.nextLine();
-        System.out.print("Enter your username: ");
-        String username = scanner.nextLine();
+        String username;
+        while (true){
+            System.out.print("Enter your username: ");
+            username = scanner.nextLine();
+            if (isValidUsername(username)){
+                break;
+            }else{
+                System.out.println("Invalid username only use characters: a-z 0-9 and _");
+            }
+
+        }
+
+
         System.out.print("Enter IP Address of the chatroom host: ");
         String hostIp = scanner.nextLine();
         System.out.print("Enter port of Chatroom host: ");
