@@ -1,16 +1,19 @@
 package com.convocraft.cmdManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import com.convocraft.MessageReceiver;
-import com.convocraft.MessageSender;
 import com.convocraft.chatroom.Chatroom;
 import com.convocraft.chatroomManager.Admin;
 
 public class newRoom {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("\033[H\033[2J"); // move cursor to top and clear screen
@@ -33,21 +36,51 @@ public class newRoom {
 
         Admin admin = new Admin(ipAddress, chatroom);
         // Start threads for sending and receiving messages
-        Thread senderThread = new Thread(new MessageSender(admin,scanner));
         Thread receiverThread = new Thread(new MessageReceiver(admin));
+
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("admin.ser"));
+        oos.writeObject(admin);
+        oos.close();
+
+        Process newTerminalProcess = null;
+        try{
+            String currentDir = new File(".").getCanonicalPath();
+            String command = String.format(
+                "cd %s && javac -cp target/classes;target/dependency/* src/main/java/com/convocraft/cmdManager/newRoomSender.java  && java -cp target/classes;target/dependency/*;target/dependency/javax.jms-api-2.0.1.jar com.convocraft.cmdManager.newRoomSender\"",
+                currentDir
+            );
+
+            // Use ProcessBuilder to execute the command
+            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "start", "cmd.exe", "/k", command);
+
+            // Start the process (this opens the new terminal window)
+            newTerminalProcess = processBuilder.start();
+
+            System.out.println("New terminal opened to send messages.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // finally {
+        //     // Ensure the new terminal process is destroyed when exiting
+        //     if (newTerminalProcess != null) {
+        //         newTerminalProcess.destroy();
+        //         System.out.println("New terminal process terminated.");
+        //     }
+        // }
+        
 
         System.out.println("Your IP address is: " + ipAddress);
         System.out.println("Your port is: 61616" );
 
         
         receiverThread.start();
-        senderThread.start();
         try {
             receiverThread.join();
-            senderThread.join();
         } catch (InterruptedException e) {
             // Handle the exception
             System.err.println("Thread was interrupted: " + e.getMessage());
         }
+
+        scanner.close();
     }
 }
