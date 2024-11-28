@@ -52,10 +52,11 @@ string stripPunctuation(const string& word) {
 }
 
 // Function to filter profanity from a message while retaining whitespace
-string filterProfanityRetainingWhitespace(const string& message, const unordered_set<string>& badWords) {
+string filterProfanityRetainingWhitespace(const string& message,const string& fileName) {
     string filteredMessage;
     string currentWord;
 
+    unordered_set<string> badWords = loadBadWords(fileName);
     for (char ch : message) {
         if (isspace(ch)) {
             // When encountering a space, process the current word
@@ -88,35 +89,16 @@ string filterProfanityRetainingWhitespace(const string& message, const unordered
     return filteredMessage;
 }
 
-string jstringToString(JNIEnv* env, jstring jStr) {
-    const char* cStr = env->GetStringUTFChars(jStr, nullptr);
-    string cppStr(cStr);
-    env->ReleaseStringUTFChars(jStr, cStr);
-    return cppStr;
-}
+// JNI implementation for the filterProfanityRetainingWhitespace method
+extern "C" JNIEXPORT jstring JNICALL Java_com_convocraft_commandProcessor_profanityFilter_filterProfanityRetainingWhitespace
+  (JNIEnv *env, jobject obj, jstring message, jstring fileName) {
+    const char *messageStr = env->GetStringUTFChars(message, NULL);
+    const char *fileNameStr = env->GetStringUTFChars(fileName, NULL);
 
-// Function to convert a Java String array to a C++ unordered_set<string>
-unordered_set<string> jstringArrayToSet(JNIEnv* env, jobjectArray jArray) {
-    unordered_set<string> badWordsSet;
-    jsize arrayLength = env->GetArrayLength(jArray);
-    for (jsize i = 0; i < arrayLength; i++) {
-        jstring jWord = (jstring)env->GetObjectArrayElement(jArray, i);
-        badWordsSet.insert(jstringToString(env, jWord));
-        env->DeleteLocalRef(jWord); // Free up memory
-    }
-    return badWordsSet;
-}
+    string filteredMessage = filterProfanityRetainingWhitespace(messageStr, fileNameStr);
 
-// Native implementation of the function
-JNIEXPORT jstring JNICALL Java_main_java_com_convocraft_commandProcessor_profanityFilter_filterProfanityRetainingWhitespace
-  (JNIEnv* env, jobject obj, jstring jMessage, jobjectArray jBadWords) {
-    // Convert Java inputs to C++ types
-    string message = jstringToString(env, jMessage);
-    unordered_set<string> badWords = jstringArrayToSet(env, jBadWords);
+    env->ReleaseStringUTFChars(message, messageStr);
+    env->ReleaseStringUTFChars(fileName, fileNameStr);
 
-    // Call the C++ profanity filtering function
-    string filteredMessage = filterProfanityRetainingWhitespace(message, badWords);
-
-    // Convert the C++ string result back to a Java string
     return env->NewStringUTF(filteredMessage.c_str());
 }

@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     com_convocraft_commandProcessor_profanityFilter
  * Method:    filterProfanityRetainingWhitespace
- * Signature: (Ljava/lang/String;[Ljava/lang/String;)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_convocraft_commandProcessor_profanityFilter_filterProfanityRetainingWhitespace
-  (JNIEnv *, jobject, jstring, jobjectArray);
+  (JNIEnv *, jobject, jstring, jstring);
 
 #ifdef __cplusplus
 }

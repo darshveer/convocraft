@@ -1,9 +1,9 @@
-package com.convocraft.commandProcessor;
+package main.java.com.convocraft.commandProcessor;
 
 import com.convocraft.chatroom.Chatroom;
 import com.convocraft.chatroomManager.User;
-import com.convocraft.commandProcessor.profanityFilter;
 import com.convocraft.chatroomManager.Admin;
+import com.convocraft.commandProcessor.profanityFilter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class commandProcessor 
 {
-    public void addProfanity(String profanity, Chatroom chatroom)        // admin only
+    /*public void addProfanity(String profanity, Chatroom chatroom)        // admin only
     {
         List<String> profanityList = chatroom.getProfanities();         // generates a refernce to the list of profanities within scope
 
@@ -68,7 +68,7 @@ public class commandProcessor
             chatroom.removeUser(banUser);
             chatroom.sendMessage("The user " + banUser + " has been banned permanently.");
         }
-    }
+    } */
 
     public void createPoll(Chatroom chatroom, String pollID, String question, String[] options, String answer)
     {
@@ -89,7 +89,7 @@ public class commandProcessor
     public static void main(String[] args)
     {
         profanityFilter pFilter = new profanityFilter();
-        System.out.println(pFilter.filterProfanityRetainingWhitespace("fuck piss shit cum"));
+        System.out.println(pFilter.filterProfanityRetainingWhitespace("fuck piss shit cum", "badWords.txt"));
     }
 
 }
