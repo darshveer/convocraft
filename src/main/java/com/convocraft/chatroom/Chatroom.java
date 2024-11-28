@@ -10,13 +10,14 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import com.convocraft.chatroomManager.ActiveMQConnectionManager;
+import com.convocraft.commandProcessor.commandProcessor;
 
 public class Chatroom {
 
     private String name;
     ActiveMQConnection connection;
     HashMap<String,String> userIpMap ;
-    CommandProcessor cmdProcessor;
+    commandProcessor cmdProcessor;
     Session session;
     MessageProducer producer;
     MessageConsumer consumer;
@@ -24,7 +25,7 @@ public class Chatroom {
     public Chatroom(String chatroomName, String adminName, String adminIp){
 
         this.userIpMap = new HashMap<>();
-        this.cmdProcessor = new CommandProcessor();
+        this.cmdProcessor = new commandProcessor();
         this.name = chatroomName;
         userIpMap.put(adminName, adminIp);
 
@@ -42,7 +43,7 @@ public class Chatroom {
 
         this.name = chatroomName;
         this.userIpMap = new HashMap<>();
-        this.cmdProcessor = new CommandProcessor();
+        this.cmdProcessor = new commandProcessor();
         userIpMap.put(username, hostIp);
 
         connection = ActiveMQConnectionManager.joinChatroomTopic(chatroomName, hostIp, hostPort);
@@ -80,11 +81,15 @@ public class Chatroom {
     public String getName() {
         return name;
     }
-
-                                                                                                                                                                                      
-    private class CommandProcessor {
-        public CommandProcessor(){
-            
+    
+    public void closeConnection(){
+        try {
+            session.close();
+            producer.close();
+            consumer.close();
+        } catch (JMSException e) {
+            System.err.println("JMS error occurred: " + e.getMessage());
         }
-    }
+            connection.close(); 
+    }                                                                                                                                                                  
 }

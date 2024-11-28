@@ -41,5 +41,8 @@ public class User implements Serializable {
     public String getChatroomPort() {
         return chatroomPort;
     }
+    public Chatroom getChatroom() {
+        return chatroom;
+    }
 }
 
