@@ -6,6 +6,7 @@ public class MessageReceiver implements Runnable {
 
     public MessageReceiver(User user) {
         this.user = user;
+        System.out.println("You've joined the Chatroom "+user.getChatroomName());
     }
 
     @Override

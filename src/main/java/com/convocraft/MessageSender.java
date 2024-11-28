@@ -16,7 +16,7 @@ public class MessageSender implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("You've joined the Chatroom! Send messages below.");
+        System.out.println("Send messages to the Chatroom "+user.getChatroomName()+" below");
         while (true) {
             System.out.print("Send >> ");
             String message = scanner.nextLine();
