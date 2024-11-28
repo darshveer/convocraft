@@ -6,10 +6,6 @@ import java.util.Scanner;
 
 public class TerminalInteraction {
 
-    public static void main(String[] args) {
-        
-    }
-
     public void createRoom() {
         Process newTerminalProcess = null;
 

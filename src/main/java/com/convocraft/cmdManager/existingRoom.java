@@ -1,10 +1,10 @@
 package com.convocraft.cmdManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
 import com.convocraft.MessageReceiver;
-import com.convocraft.MessageSender;
 import com.convocraft.chatroom.Chatroom;
 import com.convocraft.chatroomManager.User;
 
@@ -25,14 +25,37 @@ public class existingRoom {
         Chatroom chatroom = new Chatroom(chatroomName, username, hostIp, hostPort);
         User user = new User(username, chatroom);
         // Start threads for sending and receiving messages
-        Thread senderThread = new Thread(new MessageSender(user,scanner));
         Thread receiverThread = new Thread(new MessageReceiver(user));
 
+        Process newTerminalProcess = null;
+        try{
+            String currentDir = new File(".").getCanonicalPath();
+            String command = String.format(
+                "cd %s && javac -cp target/classes;target/dependency/* src/main/java/com/convocraft/cmdManager/existingRoomSender.java  && java -cp target/classes;target/dependency/*;target/dependency/javax.jms-api-2.0.1.jar com.convocraft.cmdManager.existingRoomSender\"",
+                currentDir
+            );
+
+            // Use ProcessBuilder to execute the command
+            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", "start", "cmd.exe", "/k", command);
+
+            // Start the process (this opens the new terminal window)
+            newTerminalProcess = processBuilder.start();
+
+            System.out.println("New terminal opened to send messages.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+        // finally {
+        //     // Ensure the new terminal process is destroyed when exiting
+        //     if (newTerminalProcess != null) {
+        //         newTerminalProcess.destroy();
+        //         System.out.println("New terminal process terminated.");
+        //     }
+        // }
+        
         receiverThread.start();
-        senderThread.start();
         try {
             receiverThread.join();
-            senderThread.join();
             
         } catch (InterruptedException e) {
             // Handle the exception

@@ -1,1 +1,5 @@
 .vscode
+admin.ser
+src/main/java/com/convocraft/cmdManager/existingRoomSender.class
+src/main/java/com/convocraft/cmdManager/newRoomSender.class
+src/main/java/com/convocraft/cmdManager/existingRoom.class
