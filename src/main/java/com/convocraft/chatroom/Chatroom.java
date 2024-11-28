@@ -13,6 +13,7 @@ import com.convocraft.chatroomManager.ActiveMQConnectionManager;
 
 public class Chatroom {
 
+    private String name;
     ActiveMQConnection connection;
     HashMap<String,String> userIpMap ;
     CommandProcessor cmdProcessor;
@@ -24,6 +25,7 @@ public class Chatroom {
 
         this.userIpMap = new HashMap<>();
         this.cmdProcessor = new CommandProcessor();
+        this.name = chatroomName;
         userIpMap.put(adminName, adminIp);
 
         connection = ActiveMQConnectionManager.createChatroomTopic(chatroomName);
@@ -38,6 +40,7 @@ public class Chatroom {
 
     public Chatroom(String chatroomName, String username, String hostIp, String hostPort){
 
+        this.name = chatroomName;
         this.userIpMap = new HashMap<>();
         this.cmdProcessor = new CommandProcessor();
         userIpMap.put(username, hostIp);
@@ -72,6 +75,10 @@ public class Chatroom {
             System.err.println("JMS error occurred: " + e.getMessage());
         }
         return null;
+    }
+
+    public String getName() {
+        return name;
     }
 
                                                                                                                                                                                       
