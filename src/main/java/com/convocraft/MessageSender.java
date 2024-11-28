@@ -18,6 +18,7 @@ public class MessageSender implements Runnable {
     public void run() {
         System.out.println("You've joined the Chatroom! Send messages below.");
         while (true) {
+            System.out.print("Send >> ");
             String message = scanner.nextLine();
             //System.out.print("\033[2K\r");
             user.sendMessage(message);

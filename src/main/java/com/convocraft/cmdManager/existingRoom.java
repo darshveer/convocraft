@@ -1,7 +1,9 @@
 package com.convocraft.cmdManager;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 import com.convocraft.MessageReceiver;
@@ -23,9 +25,14 @@ public class existingRoom {
         String hostPort = scanner.nextLine();
 
         Chatroom chatroom = new Chatroom(chatroomName, username, hostIp, hostPort);
-        User user = new User(username, chatroom);
+
+        User user = new User(username, chatroom, hostIp, hostPort);
         // Start threads for sending and receiving messages
         Thread receiverThread = new Thread(new MessageReceiver(user));
+
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("user.ser"));
+        oos.writeObject(user);
+        oos.close();
 
         Process newTerminalProcess = null;
         try{

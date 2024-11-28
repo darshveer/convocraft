@@ -31,7 +31,7 @@ public class newRoomSender {
             }
 
             Chatroom chatroom = new Chatroom(admin.getChatroomName(), admin.getUserName(), ipAddress);
-            admin = new Admin(ipAddress, chatroom);
+            admin = new Admin(admin.getUserName(), chatroom);
             Thread senderThread = new Thread(new MessageSender(admin, scanner));
             senderThread.start();
 

@@ -3,8 +3,6 @@ package com.convocraft.cmdManager;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import com.convocraft.MessageSender;
@@ -15,23 +13,14 @@ public class existingRoomSender {
     public static void main(String[] args) throws IOException {
         try (Scanner scanner = new Scanner(System.in)) {
             User user;
-            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("admin.ser"))) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("user.ser"))) {
                 user = (User) ois.readObject();
             } catch (ClassNotFoundException e) {
-                throw new IOException("Failed to deserialize admin object", e);
+                throw new IOException("Failed to deserialize user object", e);
             }
 
-            String ipAddress = null;
-            try {                                                                           // Get the IP address
-                ipAddress = InetAddress.getLocalHost().getHostAddress();
-
-                // Create a connection factory using the IP address
-            } catch (UnknownHostException e) {
-                System.out.println("Unknown host");
-            }
-
-            Chatroom chatroom = new Chatroom(user.getChatroomName(), user.getUserName(), ipAddress);
-            user = new User(ipAddress, chatroom);
+            Chatroom chatroom = new Chatroom(user.getChatroomName(), user.getUserName(), user.getChatroomIp(), user.getChatroomPort());
+            user = new User(user.getUserName(), chatroom, user.getChatroomIp(), user.getChatroomPort());
             Thread senderThread = new Thread(new MessageSender(user, scanner));
             senderThread.start();
 

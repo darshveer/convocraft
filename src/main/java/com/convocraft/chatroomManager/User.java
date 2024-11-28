@@ -8,11 +8,15 @@ public class User implements Serializable {
     String username;
     transient Chatroom chatroom;
     private String chatroomName;
+    private String chatroomIp;
+    private String chatroomPort;
 
-    public User(String username, Chatroom chatroom) {
+    public User(String username, Chatroom chatroom, String ipAddress, String port) {
         this.username = username;
         this.chatroom = chatroom;
         this.chatroomName = chatroom.getName();
+        this.chatroomIp = ipAddress;
+        this.chatroomPort = port;
     }
 
     public String receiveMessage(){
@@ -28,6 +32,14 @@ public class User implements Serializable {
 
     public String getUserName() {
         return username;
+    }
+
+    public String getChatroomIp() {        
+        return chatroomIp;
+    }
+
+    public String getChatroomPort() {
+        return chatroomPort;
     }
 }
 

@@ -15,7 +15,7 @@ public class TerminalInteraction {
 
             // Command to open a new terminal, run the Java file
             String command = String.format(
-                "cmd.exe /c start cmd.exe /k \"cd %s && mvn dependency:copy-dependencies && javac -cp target/classes;target/dependency/* src/main/java/com/convocraft/cmdManager/newRoom.java  && java -cp target/classes;target/dependency/*;target/dependency/javax.jms-api-2.0.1.jar com.convocraft.cmdManager.newRoom && exit\"",
+                "cmd.exe /c start cmd.exe /k \"cd %s && javac -cp target/classes;target/dependency/* src/main/java/com/convocraft/cmdManager/newRoom.java  && java -cp target/classes;target/dependency/*;target/dependency/javax.jms-api-2.0.1.jar com.convocraft.cmdManager.newRoom && exit\"",
                 currentDir
             );
 
@@ -67,7 +67,7 @@ public class TerminalInteraction {
 
             // Command to open a new terminal, run the Java file
             String command = String.format(
-                "cmd.exe /c start cmd.exe /k \"cd %s && mvn dependency:copy-dependencies && javac -cp target/classes;target/dependency/* src/main/java/com/convocraft/cmdManager/existingRoom.java  && java -cp target/classes;target/dependency/*;target/dependency/javax.jms-api-2.0.1.jar com.convocraft.cmdManager.existingRoom && exit\"",
+                "cmd.exe /c start cmd.exe /k \"cd %s && javac -cp target/classes;target/dependency/* src/main/java/com/convocraft/cmdManager/existingRoom.java  && java -cp target/classes;target/dependency/*;target/dependency/javax.jms-api-2.0.1.jar com.convocraft.cmdManager.existingRoom && exit\"",
                 currentDir
             );
 
