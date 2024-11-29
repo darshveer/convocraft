@@ -111,7 +111,7 @@ public class commandProcessor
 
     public void process(String message)
     {
-        String[] words = message.replaceAll("^\\s+/", "/");
+        String[] words = message.replaceAll("^\\s+/", "/").split(" ");
         if (words.length > 0) {
             String command = words[0].toLowerCase();
             switch (command) {
