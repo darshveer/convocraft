@@ -59,5 +59,12 @@ public class ActiveMQConnection{
     public Destination getDestination(){
         return destination;
     }
-    
+    public void close(){
+        try{
+            connection.close();
+        }catch(JMSException e){
+            System.err.println("JMS error occurred: " + e.getMessage());   
+        }
+    }
 }
+

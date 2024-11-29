@@ -2,6 +2,7 @@ package com.convocraft.cmdManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
@@ -11,14 +12,30 @@ import com.convocraft.chatroom.Chatroom;
 import com.convocraft.chatroomManager.User;
 
 public class existingRoom {
+
+    private static boolean isValidUsername(String username) {
+        String regex = "^[a-zA-Z0-9_]+$";
+        return username.matches(regex);
+    }
     public static void main(String[] args) throws IOException {
         System.out.print("\033[H\033[2J"); // move cursor to top and clear screen
         System.out.flush();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter name of Chatroom to join: ");
         String chatroomName = scanner.nextLine();
-        System.out.print("Enter your username: ");
-        String username = scanner.nextLine();
+        String username;
+        while (true){
+            System.out.print("Enter your username: ");
+            username = scanner.nextLine();
+            if (isValidUsername(username)){
+                break;
+            }else{
+                System.out.println("Invalid username only use characters: a-z 0-9 and _");
+            }
+
+        }
+
+
         System.out.print("Enter IP Address of the chatroom host: ");
         String hostIp = scanner.nextLine();
         System.out.print("Enter port of Chatroom host: ");
@@ -59,7 +76,12 @@ public class existingRoom {
         //         System.out.println("New terminal process terminated.");
         //     }
         // }
-        
+        String statusFilePath = chatroomName+"status_e.txt";
+        try (FileWriter writer = new FileWriter(statusFilePath)) {
+            writer.write("true");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         receiverThread.start();
         try {
             receiverThread.join();
@@ -67,7 +89,20 @@ public class existingRoom {
         } catch (InterruptedException e) {
             // Handle the exception
             System.err.println("Thread was interrupted: " + e.getMessage());
+        } catch (RuntimeException e) {
+            // Handle the exception
+            System.err.println("Thread was interrupted: " + e.getMessage());
         }
-                
+
+        // Write "false" to status.txt upon completion
+        try (FileWriter writer = new FileWriter(statusFilePath)) {
+            writer.write("false");
+            System.out.println("Message reciever is closing...");
+        } catch (IOException e) {
+            System.err.println("Failed to update status.txt: " + e.getMessage());
+        }
+        System.out.println("Chatroom has closed");
+        scanner.close();
     }
+    
 }

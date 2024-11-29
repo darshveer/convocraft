@@ -3,6 +3,8 @@ package com.convocraft.cmdManager;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 import com.convocraft.MessageSender;
@@ -20,9 +22,28 @@ public class existingRoomSender {
             }
 
             Chatroom chatroom = new Chatroom(user.getChatroomName(), user.getUserName(), user.getChatroomIp(), user.getChatroomPort());
+            String chatroomName = user.getChatroomName();
             user = new User(user.getUserName(), chatroom, user.getChatroomIp(), user.getChatroomPort());
             Thread senderThread = new Thread(new MessageSender(user, scanner));
             senderThread.start();
+
+            String statusFilePath = chatroomName + "status_e.txt"; // Relative path to status.txt
+
+            // Monitor the status file
+            boolean keepRunning = true;
+            while (keepRunning) {
+            try {
+                String status = new String(Files.readAllBytes(Paths.get(statusFilePath))).trim();
+                if ("false".equalsIgnoreCase(status)) {
+                    System.out.println("Message Sender has closed. Terminating program...");
+                    keepRunning = false;
+                }
+                Thread.sleep(1000); // Check the file every second
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                    keepRunning = false; // Exit on error
+                }
+            }
 
             try {
                 senderThread.join();
