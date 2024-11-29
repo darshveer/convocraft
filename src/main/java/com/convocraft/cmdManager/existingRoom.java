@@ -84,6 +84,7 @@ public class existingRoom {
             // Handle the exception
             System.err.println("Thread was interrupted: " + e.getMessage());
         }
-                
+        scanner.close();
     }
+    
 }

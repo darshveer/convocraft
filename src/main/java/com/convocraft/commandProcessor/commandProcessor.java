@@ -8,6 +8,7 @@ import com.convocraft.chatroomManager.Admin;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class commandProcessor 
 {
@@ -47,7 +48,7 @@ public class commandProcessor
         
     // }
 
-    public void leaveChatroom(Chatroom chatroom)                        // accessible to all users
+    public void leaveChatroom()                        // accessible to all users
     {
         chatroom.closeConnection();
     }
@@ -90,15 +91,43 @@ public class commandProcessor
 
     }
 
-    public static void main(String[] args)
-    {
-        profanityFilter pFilter = new profanityFilter();
-        System.out.println(pFilter.filterProfanityRetainingWhitespace("fuck piss shit cumb"));
-    }
+    // public static void main(String[] args)
+    // {
+    //     profanityFilter pFilter = new profanityFilter();
+    //     System.out.println(pFilter.filterProfanityRetainingWhitespace("fuck piss shit cumb"));
+    // }
 
     public void process(String message)
     {
-        
+        String[] words = message.split(" ");
+        if (words.length > 0) {
+            String command = words[0].toLowerCase();
+            switch (command) {
+                case "/msg":
+                    String toSend = user.getUserName() + ": " + String.join(" ", Arrays.copyOfRange(words, 1, words.length));
+                    chatroom.sendMessage(toSend);
+                    break;
+                case "/leave":
+                    chatroom.sendMessage(user.getUserName() + " has left the chatroom.");
+                    leaveChatroom();
+                    break;
+                case "/kickuser":
+                    // Handle /kickuser command
+                    break;
+                case "/banuser":
+                    // Handle /banuser command
+                    break;
+                case "/createpoll":
+                    // Handle /createpoll command
+                    break;
+                case "/replypoll":
+                    // Handle /replypoll command
+                    break;
+                default:
+                    // Handle other commands or send message to chatroom
+                    break;
+            }
+        }
     }
 
 }

@@ -5,11 +5,12 @@ com\convocraft\chatroomManager\User.class
 com\convocraft\chatroom\ActiveMQConnection.class
 com\convocraft\cmdManager\TerminalInteraction.class
 com\convocraft\App.class
-com\convocraft\chatroom\Chatroom$CommandProcessor.class
 com\convocraft\cmdManager\TerminalInteraction2.class
 com\convocraft\chatroomManager\ActiveMQConnectionManager.class
 com\convocraft\MessageSender.class
 com\convocraft\cmdManager\newRoomSender.class
 com\convocraft\cmdManager\newRoom.class
 com\convocraft\MessageReceiver.class
+com\convocraft\commandProcessor\commandProcessor.class
+com\convocraft\commandProcessor\profanityFilter.class
 com\convocraft\chatroomManager\Admin.class

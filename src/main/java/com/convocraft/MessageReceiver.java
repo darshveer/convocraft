@@ -15,7 +15,7 @@ public class MessageReceiver implements Runnable {
             String message = user.receiveMessage();
             if (message != null) {
                 // System.out.print("\033[10;0H");
-                System.out.println("Received message: " + message); // Print message
+                System.out.println(message); // Print message
                 // System.out.print("\033[B");
                 // System.out.print("\033[H\033[0E");
             }

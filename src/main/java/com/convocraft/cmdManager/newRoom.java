@@ -50,7 +50,7 @@ public class newRoom {
 
         Chatroom chatroom = new Chatroom(chatroomName, adminName, ipAddress);
 
-        Admin admin = new Admin(ipAddress, chatroom);
+        Admin admin = new Admin(adminName, chatroom);
         // Start threads for sending and receiving messages
         Thread receiverThread = new Thread(new MessageReceiver(admin));
 

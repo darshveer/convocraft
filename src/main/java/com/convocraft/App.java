@@ -1,7 +1,5 @@
 package com.convocraft;
 
-import java.util.Scanner;
-
 import com.convocraft.cmdManager.TerminalInteraction2;
 
 public class App
