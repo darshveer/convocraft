@@ -10,12 +10,14 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import com.convocraft.chatroomManager.ActiveMQConnectionManager;
+import com.convocraft.Poll;
 
 public class Chatroom {
 
     private String name;
     ActiveMQConnection connection;
-    HashMap<String,String> userIpMap ;
+    HashMap<String, String> userIpMap;
+    HashMap<String, Poll> pollMap;
     Session session;
     MessageProducer producer;
     MessageConsumer consumer;
@@ -76,6 +78,18 @@ public class Chatroom {
 
     public String getName() {
         return name;
+    }
+
+    public HashMap<String, String> getUserIpMap() {
+        return userIpMap;
+    }
+
+    public HashMap<String, Poll> getPollMap() {
+        return pollMap;
+    }
+
+    public void addPoll(String pollID, Poll newPoll){
+        pollMap.put(pollID, newPoll); 
     }
     
     public void closeConnection(){

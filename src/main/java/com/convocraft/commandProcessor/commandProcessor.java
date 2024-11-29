@@ -4,6 +4,7 @@ import com.convocraft.chatroom.Chatroom;
 import com.convocraft.chatroomManager.User;
 import com.convocraft.commandProcessor.profanityFilter;
 import com.convocraft.chatroomManager.Admin;
+import com.convocraft.chatroom.Poll;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public class commandProcessor
         this.user = user;
         this.chatroom = chatroom;
     }
+    
     // public void addProfanity(String profanity, Chatroom chatroom)        // admin only
     // {
     //     List<String> profanityList = chatroom.getProfanities();         // generates a refernce to the list of profanities within scope
@@ -80,16 +82,26 @@ public class commandProcessor
     //     }
     // }
 
-    public void createPoll(Chatroom chatroom, String pollID, String question, String[] options, String answer)
+    public void createPoll(Chatroom chatroom, String pollID, String question, String[] options)
     {
-
-        
+        Poll newPoll = new Poll(pollID, question, Arrays.asList(options));
+        if (!chatroom.getPollMap().containsKey(pollID)) 
+            chatroom.addPoll(pollID, newPoll);
+        else 
+            System.out.println("Poll with ID " + pollID + " already exists.");
     }
 
-    public void replyPoll(Chatroom chatroom, String pollID, String answer)
+    public void replyPoll(Chatroom chatroom, String pollID, String answer, User user)
     {
-
+        if(chatroom.getPollMap().containsKey(pollID))
+        {
+            Poll poll = chatroom.getPollMap().get(pollID);
+            poll.addResponse(user, answer);
+        }
+        else
+            System.out.println("Poll with ID " + pollID + " does not exist.");
     }
+
 
     // public static void main(String[] args)
     // {
@@ -110,22 +122,36 @@ public class commandProcessor
                     String toSend = "/msg " + user.getUserName() + ": " + String.join(" ", Arrays.copyOfRange(words, 1, words.length));
                     chatroom.sendMessage(toSend);
                     break;
+
                 case "/leave":
                     chatroom.sendMessage("/leave "+user.getUserName());
                     leaveChatroom();
                     break;
+
                 case "/kickuser":
                     // Handle /kickuser command
                     break;
+
                 case "/banuser":
                     // Handle /banuser command
                     break;
-                case "/createpoll":
-                    // Handle /createpoll command
+
+                case "/createpoll":                     // splits the message via format /createpoll question | option1, option2, ...
+                    String pollID = words[1];
+                    String pollInfo = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
+                    String[] pollDetails = pollInfo.split("\\|");
+                    String question = pollDetails[0];
+                    String[] options = pollDetails[1].split(",");
+                    createPoll(chatroom, pollID, question, options);
                     break;
+
                 case "/replypoll":
-                    // Handle /replypoll command
+                    pollID = words[1];
+                    String answer = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
+                    replyPoll(chatroom, pollID, answer, user);
+                    user.sendMessage("/M " + pollID + " " + answer);
                     break;
+
                 default:
                     // Handle other commands or send message to chatroom
                     break;
