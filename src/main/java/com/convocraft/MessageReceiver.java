@@ -25,7 +25,10 @@ public class MessageReceiver implements Runnable {
                 // Print message
                 // System.out.print("\033[B");
                 // System.out.print("\033[H\033[0E");
-                if (message.equals("/leave "+ user.getUserName())) break;
+                String i = "/leave "+ user.getUserName();
+                if (message.equals(i)){
+                    break;
+                }
             }
         }
     }

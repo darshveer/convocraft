@@ -164,7 +164,7 @@ public class commandProcessor
             String command = words[0].toLowerCase();
             switch (command) {
                 case "/msg":
-                    System.out.println(words[1] + String.join(" ", Arrays.copyOfRange(words, 2, words.length)));
+                    System.out.println(words[1] +" "+ String.join(" ", Arrays.copyOfRange(words, 2, words.length)));
                     break;
                 case "/leave":
                     System.out.println("User - "+words[1]+" has left the chatroom");
