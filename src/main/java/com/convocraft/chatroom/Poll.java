@@ -2,6 +2,8 @@ package com.convocraft.chatroom;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.convocraft.chatroomManager.User;;
 
 public class Poll {
@@ -34,7 +36,7 @@ public class Poll {
         }
     }
 
-    public HashMap<String, Integer> getPollResults() {
+    public String[] getPollResults() {
         HashMap<String, Integer> results = new HashMap<>();
         for (String option : options) {
             results.put(option, 0);
@@ -42,6 +44,23 @@ public class Poll {
         for (String response : responses.values()) {
             results.put(response, results.get(response) + 1);
         }
-        return results;
-    }
+        String maxResponse = null;
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : results.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxResponse = entry.getKey();
+                maxCount = entry.getValue();
+            }
+        }
+        return new String[] {maxResponse, String.valueOf(maxCount)};
+}
+
+    public String toString() {
+        String output = "Poll ID: " + pollID + "\n" + "Question: " + question + "\n" + "Options:\n";
+        for(String option : options)
+            output += option + "\n";
+        
+        String[] results = getPollResults();
+        output += "Results:\n" + results[0] + ": " + results[1] + "\n";
+        return output;    }
 }

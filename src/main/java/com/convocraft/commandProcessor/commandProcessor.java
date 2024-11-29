@@ -102,6 +102,17 @@ public class commandProcessor
             System.out.println("Poll with ID " + pollID + " does not exist.");
     }
 
+    public void viewPoll(Chatroom chatroom, String pollID)
+    {
+        if(chatroom.getPollMap().containsKey(pollID))
+        {
+            Poll poll = chatroom.getPollMap().get(pollID);
+            user.sendMessage("/viewpoll " + poll.toString());
+        }
+        else
+            System.out.println("Poll with ID " + pollID + " does not exist.");
+    }
+
 
     // public static void main(String[] args)
     // {
@@ -150,6 +161,11 @@ public class commandProcessor
                     String answer = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
                     replyPoll(chatroom, pollID, answer, user);
                     user.sendMessage("/M " + pollID + " " + answer);
+                    break;
+
+                case "/viewpoll":
+                    pollID = words[1];
+                    viewPoll(chatroom, pollID);
                     break;
 
                 default:
