@@ -50,7 +50,7 @@ public class newRoom {
 
         Chatroom chatroom = new Chatroom(chatroomName, adminName, ipAddress);
 
-        Admin admin = new Admin(ipAddress, chatroom);
+        Admin admin = new Admin(adminName, chatroom);
         // Start threads for sending and receiving messages
         Thread receiverThread = new Thread(new MessageReceiver(admin));
 
@@ -88,11 +88,14 @@ public class newRoom {
         System.out.println("Your IP address is: " + ipAddress);
         System.out.println("Your port is: 61616" );
 
-        
         receiverThread.start();
+        
         try {
             receiverThread.join();
         } catch (InterruptedException e) {
+            // Handle the exception
+            System.err.println("Thread was interrupted: " + e.getMessage());
+        } catch (RuntimeException e) {
             // Handle the exception
             System.err.println("Thread was interrupted: " + e.getMessage());
         }

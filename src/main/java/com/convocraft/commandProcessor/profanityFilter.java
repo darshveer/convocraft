@@ -1,12 +1,21 @@
-package main.java.com.convocraft.commandProcessor;
+package com.convocraft.commandProcessor;
 
-import java.util.HashMap;
+import java.io.File;
 
 public class profanityFilter {
     static 
     {
-        System.setProperty("java.library.path", System.getProperty("java.library.path") + ";src\\main\\resources");
-        System.loadLibrary("profanityFilter.dll");    }
-
-    public native String filterProfanityRetainingWhitespace(String message, String fileName);
+        // String currentDir = new File(".").getAbsolutePath();
+        // System.setProperty("java.library.path", currentDir);
+        // System.out.println(System.getProperty("java.library.path"));
+        try {
+            System.loadLibrary("profanityFilter");
+            System.out.println("Profanity filter loaded");
+        } catch (UnsatisfiedLinkError e) {
+            System.out.println("Error loading library: " + e.getMessage());
+        }  
+        
+    }
+    
+    public native static String filterProfanityRetainingWhitespace(String message, String fileName);
 }

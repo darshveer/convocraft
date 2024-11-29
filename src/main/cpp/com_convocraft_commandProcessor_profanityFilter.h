@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_convocraft_commandProcessor_profanityFilter_filterProfanityRetainingWhitespace
-  (JNIEnv *, jobject, jstring, jstring);
+  (JNIEnv *, jclass, jstring, jstring);
 
 #ifdef __cplusplus
 }

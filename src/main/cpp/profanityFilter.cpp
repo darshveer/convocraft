@@ -90,7 +90,7 @@ string filterProfanityRetainingWhitespace(const string& message,const string& fi
 }
 
 // JNI implementation for the filterProfanityRetainingWhitespace method
-extern "C" JNIEXPORT jstring JNICALL Java_com_convocraft_commandProcessor_profanityFilter_filterProfanityRetainingWhitespace
+extern "C" JNIEXPORT jstring JNICALL Java_com_convocraft_commandProcessor_profanityFilter_profanityFilter
   (JNIEnv *env, jobject obj, jstring message, jstring fileName) {
     const char *messageStr = env->GetStringUTFChars(message, NULL);
     const char *fileNameStr = env->GetStringUTFChars(fileName, NULL);
