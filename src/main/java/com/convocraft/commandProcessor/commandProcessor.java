@@ -16,11 +16,17 @@ public class commandProcessor
 
     Chatroom chatroom;
     User user;
+    boolean isActive;
 
     public commandProcessor(Chatroom chatroom, User user)
     {
         this.user = user;
         this.chatroom = chatroom;
+        isActive = true;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
     
     // public void addProfanity(String profanity, Chatroom chatroom)        // admin only
@@ -140,7 +146,11 @@ public class commandProcessor
                     break;
 
                 case "/kickuser":
-                    // Handle /kickuser command
+                    if (user instanceof Admin){
+                        chatroom.sendMessage(message);
+                    }else{
+                        System.out.println("You are not an admin.");
+                    }
                     break;
 
                 case "/banuser":
@@ -186,7 +196,11 @@ public class commandProcessor
                     System.out.println("User - "+words[1]+" has left the chatroom");
                     break;
                 case "/kickuser":
-                    // Handle /kickuser command
+                    if (user.getUserName().equals(words[1])){
+                        user.sendMessage("User "+words[1]+" has been kicked from the chatroom");
+                        leaveChatroom();
+                        isActive=false;
+                    }
                     break;
                 case "/banuser":
                     // Handle /banuser command

@@ -2,10 +2,13 @@ package com.convocraft.cmdManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 import com.convocraft.MessageReceiver;
@@ -84,12 +87,19 @@ public class newRoom {
         //     }
         // }
         
+        // Create a .txt file to store run status of newRoomSender terminal window and write "true" into it
+        String statusFilePath = chatroomName+"status.txt";
+        try (FileWriter writer = new FileWriter(statusFilePath)) {
+            writer.write("true");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("Your IP address is: " + ipAddress);
         System.out.println("Your port is: 61616" );
 
         receiverThread.start();
-        
+
         try {
             receiverThread.join();
         } catch (InterruptedException e) {
@@ -98,6 +108,14 @@ public class newRoom {
         } catch (RuntimeException e) {
             // Handle the exception
             System.err.println("Thread was interrupted: " + e.getMessage());
+        }
+
+        // Write "false" to status.txt upon completion
+        try (FileWriter writer = new FileWriter(statusFilePath)) {
+            writer.write("false");
+            System.out.println("Message reciever is closing...");
+        } catch (IOException e) {
+            System.err.println("Failed to update status.txt: " + e.getMessage());
         }
 
         scanner.close();

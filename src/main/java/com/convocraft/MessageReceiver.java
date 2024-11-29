@@ -19,7 +19,7 @@ public class MessageReceiver implements Runnable {
         System.out.println("-------------------------------------");
         while (true) {
             String message = user.receiveMessage();
-            if (message != null) {
+            if ((message != null)&&commandProcessor.isActive()) {
                 commandProcessor.processReceive(message);
                 // System.out.print("\033[10;0H");
                 // Print message
