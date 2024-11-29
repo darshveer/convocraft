@@ -23,6 +23,7 @@ public class MessageSender implements Runnable {
         System.out.println("Send messages to the Chatroom "+user.getChatroomName()+" below");
         System.out.println("-------------------------------------");
 
+        commandProcessor.processSend("/msg USER: "+user.getUserName()+" has joined the chatroom");
         while (true) {
             System.out.print("Send >> ");
             String message = scanner.nextLine();

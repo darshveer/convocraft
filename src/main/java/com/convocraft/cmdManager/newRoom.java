@@ -117,7 +117,7 @@ public class newRoom {
         } catch (IOException e) {
             System.err.println("Failed to update status.txt: " + e.getMessage());
         }
-
+        System.out.println("Chatroom has closed");
         scanner.close();
     }
 }

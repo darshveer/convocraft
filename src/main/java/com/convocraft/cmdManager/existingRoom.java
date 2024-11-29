@@ -2,6 +2,7 @@ package com.convocraft.cmdManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
@@ -75,7 +76,12 @@ public class existingRoom {
         //         System.out.println("New terminal process terminated.");
         //     }
         // }
-        
+        String statusFilePath = chatroomName+"status_e.txt";
+        try (FileWriter writer = new FileWriter(statusFilePath)) {
+            writer.write("true");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         receiverThread.start();
         try {
             receiverThread.join();
@@ -83,7 +89,19 @@ public class existingRoom {
         } catch (InterruptedException e) {
             // Handle the exception
             System.err.println("Thread was interrupted: " + e.getMessage());
+        } catch (RuntimeException e) {
+            // Handle the exception
+            System.err.println("Thread was interrupted: " + e.getMessage());
         }
+
+        // Write "false" to status.txt upon completion
+        try (FileWriter writer = new FileWriter(statusFilePath)) {
+            writer.write("false");
+            System.out.println("Message reciever is closing...");
+        } catch (IOException e) {
+            System.err.println("Failed to update status.txt: " + e.getMessage());
+        }
+        System.out.println("Chatroom has closed");
         scanner.close();
     }
     
