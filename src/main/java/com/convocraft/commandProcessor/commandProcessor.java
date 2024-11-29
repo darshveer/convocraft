@@ -97,19 +97,51 @@ public class commandProcessor
     //     System.out.println(pFilter.filterProfanityRetainingWhitespace("fuck piss shit cumb"));
     // }
 
-    public void process(String message)
+    public void processSend(String message)
     {
+        String[] words = message.replaceAll("^\\s+/", "/").split(" ");
+        if (words.length > 0) {
+            String command = words[0].toLowerCase();
+            switch (command) {
+                case "/help":
+                    System.out.println("/msg [your message] - Send a message to the chatroom\n/leave - Leave the chatroom");
+                    break;
+                case "/msg":
+                    String toSend = "/msg " + user.getUserName() + ": " + String.join(" ", Arrays.copyOfRange(words, 1, words.length));
+                    chatroom.sendMessage(toSend);
+                    break;
+                case "/leave":
+                    chatroom.sendMessage("/leave "+user.getUserName());
+                    leaveChatroom();
+                    break;
+                case "/kickuser":
+                    // Handle /kickuser command
+                    break;
+                case "/banuser":
+                    // Handle /banuser command
+                    break;
+                case "/createpoll":
+                    // Handle /createpoll command
+                    break;
+                case "/replypoll":
+                    // Handle /replypoll command
+                    break;
+                default:
+                    // Handle other commands or send message to chatroom
+                    break;
+            }
+        }
+    }
+    public void processReceive(String message){
         String[] words = message.split(" ");
         if (words.length > 0) {
             String command = words[0].toLowerCase();
             switch (command) {
                 case "/msg":
-                    String toSend = user.getUserName() + ": " + String.join(" ", Arrays.copyOfRange(words, 1, words.length));
-                    chatroom.sendMessage(toSend);
+                    System.out.println(words[1] + String.join(" ", Arrays.copyOfRange(words, 2, words.length)));
                     break;
                 case "/leave":
-                    chatroom.sendMessage(user.getUserName() + " has left the chatroom.");
-                    leaveChatroom();
+                    System.out.println("User - "+words[1]+" has left the chatroom");
                     break;
                 case "/kickuser":
                     // Handle /kickuser command

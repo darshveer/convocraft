@@ -1,7 +1,6 @@
 package com.convocraft;
 
 import java.util.Scanner;
-
 import com.convocraft.chatroomManager.User;
 import com.convocraft.commandProcessor.commandProcessor;
 
@@ -19,13 +18,19 @@ public class MessageSender implements Runnable {
 
     @Override
     public void run() {
+        System.out.println("-------------------------------------");
+        System.out.println("Type '/help' to view all commands");
         System.out.println("Send messages to the Chatroom "+user.getChatroomName()+" below");
+        System.out.println("-------------------------------------");
+
         while (true) {
             System.out.print("Send >> ");
             String message = scanner.nextLine();
             //System.out.print("\033[2K\r");
+            commandProcessor.processSend(message);
 
-            commandProcessor.process(message);
+            if (message.equals("/leave")) break;
+            
 
         }
     }
