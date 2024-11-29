@@ -2,9 +2,9 @@ package com.convocraft.chatroom;
 
 import java.util.HashMap;
 import java.util.List;
+import com.convocraft.chatroomManager.User;;
 
-
-class Poll {
+public class Poll {
     private String pollID;
     private String question;
     private List<String> options;

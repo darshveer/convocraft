@@ -10,7 +10,7 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import com.convocraft.chatroomManager.ActiveMQConnectionManager;
-import com.convocraft.Poll;
+import com.convocraft.chatroom.Poll;
 
 public class Chatroom {
 
