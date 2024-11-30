@@ -2,12 +2,13 @@ package com.convocraft.commandProcessor;
 
 import com.convocraft.chatroom.Chatroom;
 import com.convocraft.chatroomManager.User;
-import com.convocraft.commandProcessor.profanityFilter;
+import com.convocraft.commandProcessor.ProfanityFilter;
 import com.convocraft.chatroomManager.Admin;
 import com.convocraft.chatroom.Poll;
 
 import java.util.HashMap;
 import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -17,12 +18,18 @@ public class commandProcessor
     Chatroom chatroom;
     User user;
     boolean isActive;
+    ProfanityFilter filter;
 
     public commandProcessor(Chatroom chatroom, User user)
     {
         this.user = user;
         this.chatroom = chatroom;
         isActive = true;
+        try {
+            filter = new ProfanityFilter("badWords.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isActive() {
@@ -91,21 +98,17 @@ public class commandProcessor
     public void createPoll(Chatroom chatroom, String pollID, String question, String[] options)
     {
         Poll newPoll = new Poll(pollID, question, Arrays.asList(options));
-        if (!chatroom.getPollMap().containsKey(pollID)) 
-            chatroom.addPoll(pollID, newPoll);
-        else 
-            System.out.println("Poll with ID " + pollID + " already exists.");
+        chatroom.addPoll(pollID, newPoll);
+
     }
 
-    public void replyPoll(Chatroom chatroom, String pollID, String answer, User user)
+    public void replyPoll(Chatroom chatroom, String pollID, String answer, String user)
     {
         if(chatroom.getPollMap().containsKey(pollID))
         {
             Poll poll = chatroom.getPollMap().get(pollID);
             poll.addResponse(user, answer);
         }
-        else
-            System.out.println("Poll with ID " + pollID + " does not exist.");
     }
 
     public void viewPoll(Chatroom chatroom, String pollID)
@@ -136,7 +139,7 @@ public class commandProcessor
                     System.out.println("/msg [your message] - Send a message to the chatroom\n/leave - Leave the chatroom");
                     break;
                 case "/msg":
-                    String toSend = "/msg " + user.getUserName() + ": " + String.join(" ", Arrays.copyOfRange(words, 1, words.length));
+                    String toSend = "/msg " + user.getUserName() + ": " + filter.filterProfanity(String.join(" ", Arrays.copyOfRange(words, 1, words.length)));
                     chatroom.sendMessage(toSend);
                     break;
 
@@ -158,24 +161,56 @@ public class commandProcessor
                     break;
 
                 case "/createpoll":                     // splits the message via format /createpoll question | option1, option2, ...
-                    String pollID = words[1];
-                    String pollInfo = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
-                    String[] pollDetails = pollInfo.split("\\|");
-                    String question = pollDetails[0];
-                    String[] options = pollDetails[1].split(",");
-                    createPoll(chatroom, pollID, question, options);
+                if (user instanceof Admin){
+                    if (words.length < 3) {
+                        System.out.println("Error: Invalid poll format. Please use /createpoll question | option1, option2, ...");
+                    } else {
+                        String pollID = words[1];
+                        if (chatroom.getPollMap().containsKey(pollID)) {
+                            System.out.println("Error: Poll ID already in use. Please choose a unique ID.");
+                            break;
+                        }
+                
+                        String pollInfo = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
+                        String[] pollDetails = pollInfo.split("\\|");
+                        if (pollDetails.length < 2) {
+                            System.out.println("Error: Invalid poll format. Please use /createpoll question | option1, option2, ...");
+                            break;
+                        }
+                
+                        String question = pollDetails[0].trim();
+                        if (question.isEmpty()) {
+                            System.out.println("Error: Question cannot be empty.");
+                            break;
+                        }
+                
+                        String[] options = pollDetails[1].split(",");
+                        for (String option : options) {
+                            option = option.trim();
+                            if (option.isEmpty()) {
+                                System.out.println("Error: Options cannot be empty.");
+                                break;
+                            }
+                        }
+                
+                        createPoll(chatroom, pollID, question, options);
+                    }
+                }else{
+                    System.out.println("Only admins can create polls.");
+                }
                     break;
 
                 case "/replypoll":
-                    pollID = words[1];
+                    String pollID = words[1];
                     String answer = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
-                    replyPoll(chatroom, pollID, answer, user);
-                    user.sendMessage("/M " + pollID + " " + answer);
+                    user.sendMessage("/replypoll " +user.getUserName()+" "+ pollID + " " + answer);
                     break;
 
                 case "/viewpoll":
+                if (user instanceof Admin){
                     pollID = words[1];
                     viewPoll(chatroom, pollID);
+                }   
                     break;
 
                 default:
@@ -205,11 +240,16 @@ public class commandProcessor
                 case "/banuser":
                     // Handle /banuser command
                     break;
-                case "/createpoll":
-                    // Handle /createpoll command
-                    break;
                 case "/replypoll":
-                    // Handle /replypoll command
+                    if (user instanceof Admin){
+                        String username = words[1]; 
+                        String pollID = words[2];
+                        String answer = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
+                        replyPoll(chatroom, pollID, answer, username);
+                    }
+                case "/viewpoll":
+                    System.out.println(Arrays.copyOfRange(words, 1, words.length));
+            
                     break;
                 default:
                     // Handle other commands or send message to chatroom

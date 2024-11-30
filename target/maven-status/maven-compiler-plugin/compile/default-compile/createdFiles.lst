@@ -12,6 +12,6 @@ com\convocraft\cmdManager\newRoomSender.class
 com\convocraft\cmdManager\newRoom.class
 com\convocraft\MessageReceiver.class
 com\convocraft\commandProcessor\commandProcessor.class
-com\convocraft\commandProcessor\profanityFilter.class
+com\convocraft\commandProcessor\ProfanityFilter.class
 com\convocraft\chatroomManager\Admin.class
 com\convocraft\chatroom\Poll.class

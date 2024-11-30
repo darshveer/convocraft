@@ -10,7 +10,7 @@ public class Poll {
     private String pollID;
     private String question;
     private List<String> options;
-    private HashMap<User, String> responses;
+    private HashMap<String, String> responses;
 
     public Poll(String pollID, String question, List<String> options) {
         this.pollID = pollID;
@@ -23,10 +23,10 @@ public class Poll {
         return question;
     }
 
-    public void addResponse(User user, String response) {
+    public void addResponse(String user, String response) {
         if (options.contains(response)) {
             if(responses.containsKey(user)) {
-                System.out.println("User " + user.getUserName() + "has already responded");
+                System.out.println(user+ "has already responded");
             }
             else{
                 responses.put(user, response);
@@ -61,6 +61,7 @@ public class Poll {
             output += option + "\n";
         
         String[] results = getPollResults();
-        output += "Results:\n" + results[0] + ": " + results[1] + "\n";
-        return output;    }
+        output += "Results:\n" + "Most popular response: " + results[0] + " with " + results[1] + " votes\n";
+        return output;
+        }
 }

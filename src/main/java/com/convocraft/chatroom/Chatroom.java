@@ -36,6 +36,7 @@ public class Chatroom {
         } catch (JMSException e) {
             System.err.println("JMS error occurred: " + e.getMessage());
         }
+        pollMap = new HashMap<>();
     }
 
     public Chatroom(String chatroomName, String username, String hostIp, String hostPort){

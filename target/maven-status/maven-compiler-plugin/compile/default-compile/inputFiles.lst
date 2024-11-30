@@ -11,7 +11,7 @@ C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft
 C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft\MessageReceiver.java
 C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft\cmdManager\TerminalInteraction2.java
 C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft\chatroom\Chatroom.java
-C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft\commandProcessor\profanityFilter.java
+C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft\commandProcessor\ProfanityFilter.java
 C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft\chatroomManager\ActiveMQConnectionManager.java
 C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft\cmdManager\existingRoom.java
 C:\Users\parth\OneDrive\Documents\GitHub\convocraft\src\main\java\com\convocraft\chatroomManager\User.java
